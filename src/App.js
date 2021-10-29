@@ -3,77 +3,71 @@ import { useEffect, useState } from 'react';
 import './App.css';
 function App() {
 
-  const friends = [
-    {name: 'Jaki', address: 'Mymensing'},
-    {name: 'Fardin', address: 'Mymensing'},
-    {name: 'Taijul', address: 'Kishorgonj'},
-    {name: 'Sazzad', address: 'Haluaghat'},
-    {name: 'Arafat', address: 'Mymensing'},
-    {name: 'Arafat', address: 'Mymensing'}
-      
-  ] 
-  //dsdfsd
+  const products = [
+    { name: 'realmer c15', category: 'medium', price: 150 },
+    { name: 'redmi', category: 'high', price: 200 },
+    { name: 'vivo', category: 'low', price: 140 }
+  ]
   return (
     <div>
-      <Counter></Counter>
       <Users></Users>
+      <Count></Count>
       {
-        friends.map(frnd => <Friend details={frnd}></Friend>)
+
+        products.map(product => <Product dd={product} ></Product>)
       }
+
     </div>
   )
 }
-const Users=()=>{
-  const [users, setUsers] = useState([]);
-  useEffect(()=>{
+const Product = (prprty) => {
+  const { name, category, price } = prprty.dd;
+  return (
+    <div style={{ border: '2px solid cyan', width: '60%', textAlign: 'center', marginBottom: '5px' }}>
+      <h1>Name: {name}</h1>
+      <h3>Category: {category}</h3>
+      <h4>price: ${price}</h4>
+      <button>Bye Now</button>
+    </div>
+  )
+}
+const Count = () => {
+  const [count, setCount] = useState(10)
+  const newCount = () => setCount(count + 1);
+  const dCount = () => {
+    if (count > 0) setCount(count - 1);
+  };
+  return (
+    <div>
+      <h3>Count: {count}</h3>
+      <button onClick={newCount}>incrs</button>
+      <button onClick={dCount}>dcrs</button>
+    </div>
+  )
+}
+
+//users api
+const Users = () => {
+
+  const [users, setUsers] = useState([])
+
+  useEffect(() => {
     fetch('https://jsonplaceholder.typicode.com/users')
-      .then(res => res.json())
+      .then(response => response.json())
       .then(data => setUsers(data))
   }, [])
 
-  return(
+  return (
     <div>
+      <h2>Dynamic User: { }</h2>
       <ul>
         {
-          console.log(users)
-        }
-        {
-          users.map(user=><li>{user.name}</li>)
+          users.map(user => <li>{user.id}</li>)
         }
       </ul>
-    </div>
-  )
-  
-}
 
-const Counter = ()=>{
-  const [count, setCount] = useState(2865786);
-  const ddd =()=> {
-    setCount(count+1);
-  };
-  const mmm =()=> {
-    if (count>0)
-      setCount(count-1);
-  };
-  return( 
-    <div>
-      <h1>Count: {count}</h1>
-      <button onMouseMove={ddd}>increased</button>
-      <button onClick={mmm}>decreased</button>
     </div>
   )
 }
- 
-//product function
-const Friend = props=>{
-  const {name, address} = props.details;
-  return(  
-    <div className='kk'>
-      <h3 style={{textAlign: 'center'}}>Name: {name}</h3>
-      <h4 style={{textAlign:'center'}}>Address: {address}</h4>
-      <button>Click to see profile</button>
-    </div>
-  )
-}    
 
 export default App;
