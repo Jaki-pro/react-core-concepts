@@ -1,73 +1,74 @@
+import React,{useState, useEffect} from 'react';
 //import logo from './logo.svg';
-import { useEffect, useState } from 'react';
 import './App.css';
-function App() {
 
-  const products = [
-    { name: 'realmer c15', category: 'medium', price: 150 },
-    { name: 'redmi', category: 'high', price: 200 },
-    { name: 'vivo', category: 'low', price: 140 }
+function App(){
+  const name = [
+    {name: 'jaki', dept: 'cse', id : '12008035'},
+    {name: 'Milan', dept: 'Arch', id : '12008036'},
+    {name: 'sadaf', dept: 'ICT', id : '12008037'}
   ]
-  return (
+  return(
     <div>
-      <Users></Users>
-      <Count></Count>
       {
-
-        products.map(product => <Product dd={product} ></Product>)
+        name.map(nm=><Friends dd = {nm}></Friends>)
       }
+      <IncDec></IncDec>
+      <Users></Users>
+    </div>
+  )
+}
 
-    </div>
-  )
-}
-const Product = (prprty) => {
-  const { name, category, price } = prprty.dd;
-  return (
-    <div style={{ border: '2px solid cyan', width: '60%', textAlign: 'center', marginBottom: '5px' }}>
-      <h1>Name: {name}</h1>
-      <h3>Category: {category}</h3>
-      <h4>price: ${price}</h4>
-      <button>Bye Now</button>
-    </div>
-  )
-}
-const Count = () => {
-  const [count, setCount] = useState(10)
-  const newCount = () => setCount(count + 1);
-  const dCount = () => {
-    if (count > 0) setCount(count - 1);
-  };
-  return (
+const Friends = (props) =>{
+  const {name, dept, id} = props.dd;
+  return(
     <div>
-      <h3>Count: {count}</h3>
-      <button onClick={newCount}>incrs</button>
-      <button onClick={dCount}>dcrs</button>
+      <p>name: {name}</p>
+      <p>dept: {dept}</p> 
+      <h2>ID: {id}</h2>
     </div>
   )
 }
+const IncDec=()=>{
+  const [count, setCount] = useState(0);
+  const incount=()=>setCount(count+1)
+  const decrease =()=>{
+    if (count>0) {
+      setCount(count-1)
+    }
+  }
+  return(
+    <div> 
+      <p>count: {count}</p>
+      <button onClick={incount}>increase</button>
+      <button onClick={decrease}>decrease</button>
+      <DDD cnt = {count}></DDD>
+    </div>
+    
+  )
 
-//users api
-const Users = () => {
-
+}
+const Users=()=>{
   const [users, setUsers] = useState([])
-
-  useEffect(() => {
+  useEffect(()=>{
     fetch('https://jsonplaceholder.typicode.com/users')
-      .then(response => response.json())
-      .then(data => setUsers(data))
-  }, [])
-
-  return (
+    .then(res=>res.json())
+    .then(data=>setUsers(data))
+  },[])
+  return(<div>
+    <h1>dynamic users: </h1>
+    <ul>
+      {
+        users.map(user=><li>{user.name}</li>)
+      }
+    </ul>
+  </div>)
+}
+const DDD=(props)=>{
+  return(
     <div>
-      <h2>Dynamic User: { }</h2>
-      <ul>
-        {
-          users.map(user => <li>{user.id}</li>)
-        }
-      </ul>
-
+      <h3>number of guys: {props.cnt}</h3>
     </div>
   )
 }
-
 export default App;
